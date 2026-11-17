@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=https://aka.ms/winget-manifest.defaultLocale.1.10.0.schema.json
+PackageIdentifier: chlctt.NovaChatMix
+PackageVersion: 1.0.0
+PackageLocale: en-US
+Publisher: chlctt
+PublisherUrl: https://github.com/chlctt
+PackageName: Nova ChatMix
+PackageUrl: https://github.com/chlctt/nova-chatmix-windows
+License: 0BSD
+LicenseUrl: https://github.com/chlctt/nova-chatmix-windows/blob/main/LICENSE
+ShortDescription: ChatMix wheel, per-app output routing and channel mixer for the SteelSeries Arctis Nova Pro Wireless, without GG/Sonar.
+Description: |-
+  Unofficial Windows tool for the Arctis Nova Pro Wireless base station. The ChatMix wheel mixes game and chat apps per app,
+  every app can be assigned to a channel (Game, Chat, Media, Aux) with its own output device, and the default microphone
+  can be selected. Requires NirSoft SoundVolumeView. Not affiliated with SteelSeries.
+Tags:
+- arctis
+- audio
+- chatmix
+- headset
+- steelseries
+ReleaseNotesUrl: https://github.com/chlctt/nova-chatmix-windows/releases/tag/v1.0.0
+ManifestType: defaultLocale
+ManifestVersion: 1.10.0

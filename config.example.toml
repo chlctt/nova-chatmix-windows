@@ -1,0 +1,17 @@
+# Copy to config.toml (the UI creates it on first change). Without config.toml, this file is used.
+# Output channels: game, chat, medien (media), aux. The wheel only mixes game <-> chat.
+# Channels without their own entry use the game device. mikro = default recording device (optional).
+# Value = part of the device name; list devices with: python chatmix.py --devices
+[devices]
+game = "Arctis Nova Pro Wireless"
+# aux = "My Soundbar"
+# mikro = "My Microphone"
+
+# process name (lowercase) -> channel: game | chat | medien | aux. Unknown apps use "default".
+[apps]
+default = "game"
+"discord.exe" = "chat"
+"teams.exe" = "chat"
+"ms-teams.exe" = "chat"
+"teamspeak.exe" = "chat"
+"ts3client_win64.exe" = "chat"
