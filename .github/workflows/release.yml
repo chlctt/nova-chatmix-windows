@@ -1,0 +1,67 @@
+name: Release
+
+# Push a tag like v1.0.1 -> builds the exe on GitHub, signs it with SignPath (if configured) and creates a DRAFT release.
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write   # create the release
+  actions: read     # SignPath reads the build artifact
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+
+      - name: Build
+        shell: pwsh
+        run: |
+          python -m pip install -r requirements.txt pyinstaller
+          python -m PyInstaller --noconfirm --clean --windowed --name NovaChatMix --version-file version_info.txt `
+            --collect-data customtkinter --hidden-import pystray._win32 --add-data "config.example.toml;." ui.py
+
+      - name: Upload unsigned build
+        id: upload
+        uses: actions/upload-artifact@v7
+        with:
+          name: NovaChatMix-unsigned
+          path: dist/NovaChatMix
+
+      # Only runs once SignPath is set up: repository variable SIGNPATH_ORGANIZATION_ID + secret SIGNPATH_API_TOKEN.
+      - name: Sign with SignPath
+        if: ${{ vars.SIGNPATH_ORGANIZATION_ID != '' }}
+        uses: signpath/github-action-submit-signing-request@v3
+        with:
+          api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
+          organization-id: ${{ vars.SIGNPATH_ORGANIZATION_ID }}
+          project-slug: nova-chatmix-windows
+          signing-policy-slug: release-signing
+          artifact-configuration-slug: initial
+          github-artifact-id: ${{ steps.upload.outputs.artifact-id }}
+          wait-for-completion: true
+          wait-for-completion-timeout-in-seconds: 7200   # every release needs manual approval in SignPath
+          output-artifact-directory: signed
+
+      - name: Package
+        shell: pwsh
+        run: |
+          $src = if (Test-Path signed) { "signed" } else { "dist/NovaChatMix" }
+          New-Item -ItemType Directory release/NovaChatMix | Out-Null
+          Copy-Item "$src/*" release/NovaChatMix -Recurse
+          Copy-Item README.md, LICENSE release/NovaChatMix
+          Compress-Archive release/NovaChatMix NovaChatMix-win64.zip
+          $sig = (Get-AuthenticodeSignature release/NovaChatMix/NovaChatMix.exe).Status
+          $hash = (Get-FileHash NovaChatMix-win64.zip -Algorithm SHA256).Hash
+          "SHA256: $hash`nSignature: $sig" | Tee-Object -FilePath $env:GITHUB_STEP_SUMMARY
+
+      - name: Draft release
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "${{ github.ref_name }}" NovaChatMix-win64.zip --draft --title "${{ github.ref_name }}" --generate-notes
