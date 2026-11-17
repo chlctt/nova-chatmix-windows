@@ -53,7 +53,7 @@ Build the exe with PyInstaller (not part of `requirements.txt`):
   --collect-data customtkinter --hidden-import pystray._win32 --add-data "config.example.toml;." ui.py
 ```
 
-The result is the folder `dist\NovaChatMix\` (about 43 MB). Releases are built the same way by the GitHub Actions workflow in `.github/workflows/release.yml` (see the [code signing policy](CODE_SIGNING_POLICY.md)).
+The result is the folder `dist\NovaChatMix\` (about 43 MB). Releases are built the same way by the GitHub Actions workflow in `.github/workflows/release.yml`.
 
 ## Configuration
 
@@ -84,10 +84,6 @@ Helpers when running from source:
 ## Credits
 
 The HID protocol comes from [nova-chatmix-linux](https://github.com/Dymstro/nova-chatmix-linux) by Dymstro (0BSD). This project is an independent Windows implementation and shares no code with it.
-
-## Code signing policy
-
-Release builds are planned to be signed with free code signing provided by [SignPath.io](https://signpath.io), certificate by [SignPath Foundation](https://signpath.org) (application pending; releases are unsigned until then). See [CODE_SIGNING_POLICY.md](CODE_SIGNING_POLICY.md).
 
 ## License
 
@@ -138,7 +134,5 @@ Alles lässt sich im Fenster einstellen. Die Einstellungen liegen unter `%APPDAT
 - Mit wieder gestartetem GG ist Sonar wie vorher da.
 
 ## Credits und Lizenz
-
-Code-Signing: Release-Builds sollen mit der kostenlosen Signierung von [SignPath.io](https://signpath.io) (Zertifikat der [SignPath Foundation](https://signpath.org)) signiert werden, der Antrag ist noch offen, bis dahin sind die Releases unsigniert. Siehe [CODE_SIGNING_POLICY.md](CODE_SIGNING_POLICY.md).
 
 Das HID-Protokoll stammt aus [nova-chatmix-linux](https://github.com/Dymstro/nova-chatmix-linux) von Dymstro (0BSD). Dieses Projekt ist eine eigenständige Windows-Umsetzung ohne gemeinsamen Code. Lizenz: [0BSD](LICENSE). SoundVolumeView ist eine eigene Software von NirSoft und liegt diesem Repository nicht bei.
